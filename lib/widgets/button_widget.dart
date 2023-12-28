@@ -5,6 +5,12 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return ElevatedButton(
+      onPressed: (){}, 
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(100, 50),
+      ),
+      child: const Text('Click', style: TextStyle(fontSize: 18),),
+      );
   }
 }

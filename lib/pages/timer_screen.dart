@@ -17,8 +17,13 @@ class TimerScreen extends StatelessWidget {
       ),
       body: const Column(
         children: [
-          CurrentSecondWidget(),
-          RandomNumberWidget(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              CurrentSecondWidget(),
+              RandomNumberWidget(),
+            ],
+          ),
           SuccessFailureWidget(),
           CircularTimerWidget(),
           ButtonWidget(),
