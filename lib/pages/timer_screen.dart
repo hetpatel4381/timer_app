@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:timer_app/widgets/button_widget.dart';
-import 'package:timer_app/widgets/circular_timer.dart';
-import 'package:timer_app/widgets/current_second.dart';
-import 'package:timer_app/widgets/random_number.dart';
-import 'package:timer_app/widgets/success_failure.dart';
+import 'package:timer_app/screens/button_widget.dart';
+import 'package:timer_app/screens/circular_timer.dart';
+import 'package:timer_app/screens/current_second.dart';
+import 'package:timer_app/screens/random_number.dart';
+import 'package:timer_app/screens/success_failure.dart';
 
 class TimerScreen extends StatelessWidget {
   const TimerScreen({super.key});
@@ -15,19 +15,25 @@ class TimerScreen extends StatelessWidget {
         title: const Text('Timer App'),
         centerTitle: true,
       ),
-      body: const Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              CurrentSecondWidget(),
-              RandomNumberWidget(),
-            ],
-          ),
-          SuccessFailureWidget(),
-          CircularTimerWidget(),
-          ButtonWidget(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CurrentSecondWidget(),
+                RandomNumberWidget(),
+              ],
+            ),
+            SizedBox(height: 50),
+            SuccessFailureWidget(),
+            SizedBox(height: 50),
+            CircularTimerWidget(),
+            SizedBox(height: 50),
+            ButtonWidget(),
+          ],
+        ),
       ),
     );
   }
