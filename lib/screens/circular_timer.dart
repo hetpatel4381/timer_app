@@ -1,64 +1,61 @@
-import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:flutter/material.dart';
 
 class CircularTimerWidget extends StatefulWidget {
-  const CircularTimerWidget({
-    Key? key,
-  }) : super(key: key);
+  final CircularTimerWidgetController controller;
+  const CircularTimerWidget({Key? key, required this.controller})
+      : super(key: key);
 
   @override
   State<CircularTimerWidget> createState() => _CircularTimerWidgetState();
 }
 
 class _CircularTimerWidgetState extends State<CircularTimerWidget> {
-  int duration = 5;
-  late Timer _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _startTimer();
-  }
-
-  void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      _resetTimer();
-    });
-  }
-
-  void _resetTimer() {
-    setState(() {
-      duration = 5;
-    });
-  }
-
-  void _onButtonClick() {
-    _timer.cancel();
-    _startTimer();
-    _resetTimer();
-  }
-
-  void resetTimer() {
-    _resetTimer();
-  }
-
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
+  final int _duration = 5;
+  final CountDownController _controller = CountDownController();
 
   @override
   Widget build(BuildContext context) {
+    widget.controller.setController(_controller);
+
     return CircularCountDownTimer(
+      duration: _duration,
+      controller: _controller,
       width: MediaQuery.of(context).size.width / 2,
       height: 200,
-      duration: duration,
-      fillColor: Colors.green,
-      ringColor: Colors.red,
+      ringColor: Colors.grey[300]!,
+      fillColor: Colors.black45,
+      backgroundColor: Colors.black,
+      strokeWidth: 20.0,
+      strokeCap: StrokeCap.round,
+      textStyle: const TextStyle(
+        fontSize: 33.0,
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+      textFormat: CountdownTextFormat.S,
       isReverse: true,
-      textStyle: const TextStyle(fontSize: 32),
+      isTimerTextShown: true,
+      autoStart: false,
+      timeFormatterFunction: ((defaultFormatterFunction, duration) {
+        if (duration.inSeconds == 0) {
+          return "Restart";
+        } else {
+          return Function.apply(defaultFormatterFunction, [duration]);
+        }
+      }),
     );
+  }
+}
+
+class CircularTimerWidgetController {
+  CountDownController? _internalController;
+
+  void setController(CountDownController controller) {
+    _internalController = controller;
+  }
+
+  void restart() {
+    _internalController?.restart(duration: 5);
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppContainer extends StatelessWidget {
-  AppContainer({
+  const AppContainer({
     Key? key,
     required this.title,
     this.subTitle = '60',
@@ -15,7 +15,7 @@ class AppContainer extends StatelessWidget {
   }) : super(key: key);
 
   final String title;
-  String subTitle;
+  final String subTitle;
   final Color? color;
   final double height, width;
   final EdgeInsetsGeometry margin;

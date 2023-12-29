@@ -7,8 +7,6 @@ import 'package:timer_app/screens/current_second.dart';
 import 'package:timer_app/screens/random_number.dart';
 import 'package:timer_app/screens/success_failure.dart';
 
-// final GlobalKey<_CircularTimerWidgetState> circularTimerKey = GlobalKey<_CircularTimerWidgetState>();
-
 class TimerScreen extends StatefulWidget {
   const TimerScreen({Key? key}) : super(key: key);
 
@@ -22,10 +20,13 @@ class _TimerScreenState extends State<TimerScreen> {
   bool isSuccess = true;
   int scoreOrAttempts = 0;
 
+  late CircularTimerWidgetController _circilarTimerWidgetController;
+
   @override
   void initState() {
     super.initState();
     currentSecond = DateTime.now().second;
+    _circilarTimerWidgetController = CircularTimerWidgetController();
   }
 
   void updateCurrentSecond() {
@@ -52,12 +53,6 @@ class _TimerScreenState extends State<TimerScreen> {
         scoreOrAttempts++;
       });
     }
-  }
-
-  void updateCircularTimer() {
-    setState(() {
-      // circularTimerKey.currentState?.resetTimer();
-    });
   }
 
   @override
@@ -90,15 +85,15 @@ class _TimerScreenState extends State<TimerScreen> {
               scoreOrAttempts: scoreOrAttempts,
             ),
             const SizedBox(height: 50),
-            // CircularTimerWidget(
-            //   // key: circularTimerKey,
-            // ),
+            CircularTimerWidget(
+              controller: _circilarTimerWidgetController,
+                ),
             const SizedBox(height: 50),
             ButtonWidget(
               onPressedFunction: [
                 () => updateCurrentSecond(),
                 () => updateRandomNumber(),
-                () => updateCircularTimer(),
+                () => _circilarTimerWidgetController.restart(),
               ],
               checkSuccess: checkSuccess,
             ),
