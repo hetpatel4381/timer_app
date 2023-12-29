@@ -4,18 +4,19 @@ class ButtonWidget extends StatelessWidget {
   const ButtonWidget({
     super.key,
     required this.onPressedFunction,
+    required this.checkSuccess,
   });
   final List<VoidCallback>? onPressedFunction;
+  final VoidCallback checkSuccess;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        if (onPressedFunction != null) {
-          for (var onPressedFunction in onPressedFunction!) {
-            onPressedFunction();
-          }
-        }
+        onPressedFunction?.forEach((function) {
+          function();
+        });
+        checkSuccess();
       },
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(100, 50),

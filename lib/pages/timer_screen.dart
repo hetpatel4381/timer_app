@@ -7,7 +7,7 @@ import 'package:timer_app/screens/current_second.dart';
 import 'package:timer_app/screens/random_number.dart';
 import 'package:timer_app/screens/success_failure.dart';
 
-final GlobalKey<_CircularTimerWidgetState> circularTimerKey = GlobalKey<_CircularTimerWidgetState>();
+// final GlobalKey<_CircularTimerWidgetState> circularTimerKey = GlobalKey<_CircularTimerWidgetState>();
 
 class TimerScreen extends StatefulWidget {
   const TimerScreen({Key? key}) : super(key: key);
@@ -19,6 +19,8 @@ class TimerScreen extends StatefulWidget {
 class _TimerScreenState extends State<TimerScreen> {
   late int currentSecond;
   late int randomNo = 0;
+  bool isSuccess = true;
+  int scoreOrAttempts = 0;
 
   @override
   void initState() {
@@ -38,9 +40,23 @@ class _TimerScreenState extends State<TimerScreen> {
     });
   }
 
+  void checkSuccess() {
+    if (currentSecond == randomNo) {
+      setState(() {
+        isSuccess = true;
+        scoreOrAttempts++;
+      });
+    } else {
+      setState(() {
+        isSuccess = false;
+        scoreOrAttempts++;
+      });
+    }
+  }
+
   void updateCircularTimer() {
     setState(() {
-      circularTimerKey.currentState?.resetTimer();
+      // circularTimerKey.currentState?.resetTimer();
     });
   }
 
@@ -69,11 +85,14 @@ class _TimerScreenState extends State<TimerScreen> {
               ],
             ),
             const SizedBox(height: 50),
-            SuccessFailureWidget(),
-            const SizedBox(height: 50),
-            CircularTimerWidget(
-              key: circularTimerKey,
+            SuccessFailureWidget(
+              isSuccess: isSuccess,
+              scoreOrAttempts: scoreOrAttempts,
             ),
+            const SizedBox(height: 50),
+            // CircularTimerWidget(
+            //   // key: circularTimerKey,
+            // ),
             const SizedBox(height: 50),
             ButtonWidget(
               onPressedFunction: [
@@ -81,6 +100,7 @@ class _TimerScreenState extends State<TimerScreen> {
                 () => updateRandomNumber(),
                 () => updateCircularTimer(),
               ],
+              checkSuccess: checkSuccess,
             ),
           ],
         ),
