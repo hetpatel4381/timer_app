@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:timer_app/screens/button_widget.dart';
 import 'package:timer_app/screens/circular_timer.dart';
@@ -5,8 +7,42 @@ import 'package:timer_app/screens/current_second.dart';
 import 'package:timer_app/screens/random_number.dart';
 import 'package:timer_app/screens/success_failure.dart';
 
-class TimerScreen extends StatelessWidget {
-  const TimerScreen({super.key});
+final GlobalKey<_CircularTimerWidgetState> circularTimerKey = GlobalKey<_CircularTimerWidgetState>();
+
+class TimerScreen extends StatefulWidget {
+  const TimerScreen({Key? key}) : super(key: key);
+
+  @override
+  State<TimerScreen> createState() => _TimerScreenState();
+}
+
+class _TimerScreenState extends State<TimerScreen> {
+  late int currentSecond;
+  late int randomNo = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    currentSecond = DateTime.now().second;
+  }
+
+  void updateCurrentSecond() {
+    setState(() {
+      currentSecond = DateTime.now().second;
+    });
+  }
+
+  void updateRandomNumber() {
+    setState(() {
+      randomNo = Random().nextInt(60);
+    });
+  }
+
+  void updateCircularTimer() {
+    setState(() {
+      circularTimerKey.currentState?.resetTimer();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,20 +54,34 @@ class TimerScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                CurrentSecondWidget(),
-                RandomNumberWidget(),
+                CurrentSecondWidget(
+                  currentSecond: currentSecond,
+                  onUpdate: updateCurrentSecond,
+                ),
+                RandomNumberWidget(
+                  randomNumber: randomNo,
+                  updateRandomNO: updateRandomNumber,
+                ),
               ],
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             SuccessFailureWidget(),
-            SizedBox(height: 50),
-            CircularTimerWidget(),
-            SizedBox(height: 50),
-            ButtonWidget(),
+            const SizedBox(height: 50),
+            CircularTimerWidget(
+              key: circularTimerKey,
+            ),
+            const SizedBox(height: 50),
+            ButtonWidget(
+              onPressedFunction: [
+                () => updateCurrentSecond(),
+                () => updateRandomNumber(),
+                () => updateCircularTimer(),
+              ],
+            ),
           ],
         ),
       ),
