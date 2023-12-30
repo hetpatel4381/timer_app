@@ -22,7 +22,7 @@ class SuccessFailureWidget extends StatelessWidget {
       subTitle:
           isSuccess ? 'Score: $scoreOrAttempts' : 'Attempts: $scoreOrAttempts',
       titleFont: 24,
-      subTitleFont: 32,
+      subTitleFont: 28,
       textColor: Colors.white,
     );
   }
