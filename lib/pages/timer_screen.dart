@@ -1,103 +1,47 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:timer_app/provider/timer_provider.dart';
 import 'package:timer_app/screens/button_widget.dart';
 import 'package:timer_app/screens/circular_timer.dart';
 import 'package:timer_app/screens/current_second.dart';
 import 'package:timer_app/screens/random_number.dart';
 import 'package:timer_app/screens/success_failure.dart';
 
-class TimerScreen extends StatefulWidget {
-  const TimerScreen({Key? key}) : super(key: key);
-
-  @override
-  State<TimerScreen> createState() => _TimerScreenState();
-}
-
-class _TimerScreenState extends State<TimerScreen> {
-  late int currentSecond;
-  late int randomNo = 0;
-  bool isSuccess = true;
-  int scoreOrAttempts = 0;
-
-  late CircularTimerWidgetController _circilarTimerWidgetController;
-
-  @override
-  void initState() {
-    super.initState();
-    currentSecond = DateTime.now().second;
-    _circilarTimerWidgetController = CircularTimerWidgetController();
-  }
-
-  void updateCurrentSecond() {
-    setState(() {
-      currentSecond = DateTime.now().second;
-    });
-  }
-
-  void updateRandomNumber() {
-    setState(() {
-      randomNo = Random().nextInt(60);
-    });
-  }
-
-  void checkSuccess() {
-    if (currentSecond == randomNo) {
-      setState(() {
-        isSuccess = true;
-        scoreOrAttempts++;
-      });
-    } else {
-      setState(() {
-        isSuccess = false;
-        scoreOrAttempts++;
-      });
-    }
-  }
+class TimerScreen extends StatelessWidget {
+  const TimerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Timer App'),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                CurrentSecondWidget(
-                  currentSecond: currentSecond,
-                  onUpdate: updateCurrentSecond,
-                ),
-                RandomNumberWidget(
-                  randomNumber: randomNo,
-                  updateRandomNO: updateRandomNumber,
-                ),
-              ],
-            ),
-            const SizedBox(height: 50),
-            SuccessFailureWidget(
-              isSuccess: isSuccess,
-              scoreOrAttempts: scoreOrAttempts,
-            ),
-            const SizedBox(height: 50),
-            CircularTimerWidget(
-              controller: _circilarTimerWidgetController,
-                ),
-            const SizedBox(height: 50),
-            ButtonWidget(
-              onPressedFunction: [
-                () => updateCurrentSecond(),
-                () => updateRandomNumber(),
-                () => _circilarTimerWidgetController.restart(),
-              ],
-              checkSuccess: checkSuccess,
-            ),
-          ],
+    return ChangeNotifierProvider(
+      create: (context) => TimerProvider(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Timer App'),
+          centerTitle: true,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CurrentSecondWidget(
+                    onUpdate: (){},
+                  ),
+                  RandomNumberWidget(
+                    updateRandomNO: (){},
+                  ),
+                ],
+              ),
+              const SizedBox(height: 50),
+              const SuccessFailureWidget(),
+              const SizedBox(height: 50),
+              const CircularTimerWidget(),
+              const SizedBox(height: 50),
+              const ButtonWidget(),
+            ],
+          ),
         ),
       ),
     );

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:timer_app/provider/timer_provider.dart';
 import 'package:timer_app/widgets/app_container.dart';
 
 class SuccessFailureWidget extends StatelessWidget {
   const SuccessFailureWidget({
     super.key,
-    required this.isSuccess,
-    required this.scoreOrAttempts,
-    });
-
-  final bool isSuccess;
-  final int scoreOrAttempts;
+  });
 
   @override
   Widget build(BuildContext context) {
+    final isSuccess = context.watch<TimerProvider>().isSuccess;
+    final scoreOrAttempts = context.watch<TimerProvider>().scoreOrAttempts;
+    
     return AppContainer(
       height: 150,
       width: double.infinity,

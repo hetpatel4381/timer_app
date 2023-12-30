@@ -1,26 +1,24 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:timer_app/provider/timer_provider.dart';
 
-class CircularTimerWidget extends StatefulWidget {
-  final CircularTimerWidgetController controller;
-  const CircularTimerWidget({Key? key, required this.controller})
-      : super(key: key);
-
-  @override
-  State<CircularTimerWidget> createState() => _CircularTimerWidgetState();
-}
-
-class _CircularTimerWidgetState extends State<CircularTimerWidget> {
-  final int _duration = 5;
-  final CountDownController _controller = CountDownController();
+class CircularTimerWidget extends StatelessWidget {
+  const CircularTimerWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    widget.controller.setController(_controller);
+    final controller = context.watch<TimerProvider>().internalController;
+
+    if (controller == null) {
+      final newController = CountDownController();
+      context.read<TimerProvider>().setInternalController(newController);
+      return const CircularProgressIndicator();
+    }
 
     return CircularCountDownTimer(
-      duration: _duration,
-      controller: _controller,
+      duration: 5,
+      controller: controller,
       width: MediaQuery.of(context).size.width / 2,
       height: 200,
       ringColor: Colors.grey[300]!,
@@ -45,17 +43,5 @@ class _CircularTimerWidgetState extends State<CircularTimerWidget> {
         }
       }),
     );
-  }
-}
-
-class CircularTimerWidgetController {
-  CountDownController? _internalController;
-
-  void setController(CountDownController controller) {
-    _internalController = controller;
-  }
-
-  void restart() {
-    _internalController?.restart(duration: 5);
   }
 }
